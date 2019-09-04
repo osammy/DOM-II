@@ -2,15 +2,38 @@
 var animateHTML = function() {
   var elems;
   var windowHeight;
+  var imgDiv;
+
+  function startAnimation() {
+        checkPosition();
+        checkPositionImg();
+  }
   function init() {
     elems = document.querySelectorAll(".text-content");
+    imgDiv = document.querySelectorAll(".img-content");
+    // const sec = document.querySelectorAll(".content-section")
+    // sec.forEach(el => {
+    //   el.style.visibility ="hidden";
+    // })
+
     windowHeight = window.innerHeight;
     addEventHandlers();
-    checkPosition();
   }
   function addEventHandlers() {
-    window.addEventListener("scroll", checkPosition);
+    window.addEventListener("scroll", startAnimation);
     window.addEventListener("resize", init);
+  }
+    function checkPositionImg() {
+    for (var i = 0; i < imgDiv.length; i++) {
+      var positionFromTop = imgDiv[i].getBoundingClientRect().top;
+      if (positionFromTop - windowHeight <= 0) {
+        imgDiv[i].className = imgDiv[i].className.replace(
+          "img-content",
+          "img-content animated fadeInLeft"
+        );
+        // elems[i].classList.add("animated, delay-2s, bounceIn");
+      }
+    }
   }
   function checkPosition() {
     for (var i = 0; i < elems.length; i++) {
@@ -18,12 +41,13 @@ var animateHTML = function() {
       if (positionFromTop - windowHeight <= 0) {
         elems[i].className = elems[i].className.replace(
           "text-content",
-          "text-content animated delay-2s slideInRight"
+          "text-content animated fadeInRight"
         );
         // elems[i].classList.add("animated, delay-2s, bounceIn");
       }
     }
   }
+
   return {
     init: init
   };
@@ -73,7 +97,6 @@ function init() {
 
 const texts = document.querySelectorAll(".text-content");
 
-console.log(texts);
 
 texts.forEach(el => {
   el.addEventListener("select", handleSelect);
